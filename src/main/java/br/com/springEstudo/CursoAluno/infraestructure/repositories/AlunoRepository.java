@@ -6,6 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.com.springEstudo.CursoAluno.infraestructure.entities.AlunoEntity;
 
+
+
 public interface AlunoRepository extends JpaRepository<AlunoEntity, UUID> {
 
+	AlunoEntity findByEmail(String email);
+	
+	boolean existsByEmail(String email);
+	
+	void deleteByEmail(String email);
 }
