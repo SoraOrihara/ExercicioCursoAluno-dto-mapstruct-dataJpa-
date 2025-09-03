@@ -64,6 +64,12 @@ public class AlunoEntity implements Serializable {
 		this.cursos = cursos;
 	}
 
+	
+	
+	public AlunoEntity() {
+		super();
+	}
+
 	public AlunoEntity(String nome, String email, Set<CursoEntity> cursos) {
 		super();
 		this.nome = nome;

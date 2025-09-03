@@ -5,6 +5,7 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 
 import br.com.springEstudo.CursoAluno.business.dto.CursoRequestDto;
@@ -12,7 +13,7 @@ import br.com.springEstudo.CursoAluno.business.dto.CursoResponseDto;
 import br.com.springEstudo.CursoAluno.infraestructure.entities.CursoEntity;
 
 @Mapper(componentModel = "spring", uses = { AlunoMapper.class,
-		ReferenciaMapper.class }, unmappedSourcePolicy = ReportingPolicy.WARN)
+		ReferenciaMapper.class }, unmappedSourcePolicy = ReportingPolicy.WARN, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CursoMapper {
 
 	@Mapping(target = "id", ignore = true)

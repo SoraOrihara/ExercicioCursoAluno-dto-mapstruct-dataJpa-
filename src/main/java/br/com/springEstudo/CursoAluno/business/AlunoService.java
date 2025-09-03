@@ -42,13 +42,14 @@ public class AlunoService {
 		return alunoMapper.paraListaAlunoResponseDto(alunoRepository.findAll());
 	}
 
-	public AlunoResponseDto listarPorEmail(String email) {
-		if (!alunoRepository.existsByEmail(email)) {
-			throw new RuntimeException("erro");
-		}
-		return alunoMapper.paraAlunoResponseDto(alunoRepository.findByEmail(email));
-	}
+	public AlunoResponseDto listarPorId(UUID id) {
+	    // Busca o aluno por ID. O `findById` retorna um `Optional`
+	    // por isso usamos `orElseThrow` para lançar uma exceção caso não encontre
+	    AlunoEntity aluno = alunoRepository.findById(id)
+	                                  .orElseThrow(() -> new RuntimeException("erro"));
 
+	    return alunoMapper.paraAlunoResponseDto(aluno);
+	}
 	@Transactional
 	public AlunoResponseDto update(UUID id, AlunoRequestDto request) {
 		// Pegar o id do aluno e depois atualizar de acordo com o request
@@ -67,11 +68,12 @@ public class AlunoService {
 	}
 
 	@Transactional
-	public void deletarByEmail(String email) {
-		if (!alunoRepository.existsByEmail(email)) {
-			throw new RuntimeException("erro");
-		}
-		alunoRepository.deleteByEmail(email);
+	public void deletarById(UUID id) {
+	    // Verifica se o aluno existe antes de tentar deletar
+	    if (!alunoRepository.existsById(id)) {
+	        throw new RuntimeException("erro");
+	    }
+	    alunoRepository.deleteById(id);
 	}
 
 }

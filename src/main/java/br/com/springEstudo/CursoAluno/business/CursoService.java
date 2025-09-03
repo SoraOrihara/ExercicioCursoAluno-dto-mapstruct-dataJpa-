@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+
 import br.com.springEstudo.CursoAluno.business.dto.CursoRequestDto;
 import br.com.springEstudo.CursoAluno.business.dto.CursoResponseDto;
 import br.com.springEstudo.CursoAluno.business.mapstructure.CursoMapper;
@@ -14,23 +16,24 @@ import br.com.springEstudo.CursoAluno.infraestructure.entities.CursoEntity;
 import br.com.springEstudo.CursoAluno.infraestructure.repositories.CursoRepository;
 import jakarta.transaction.Transactional;
 
+@Service
 public class CursoService {
 	private final CursoRepository cursoRepository;
 	private final CursoMapper cursoMapper;
 	private final ReferenciaMapper mapper;
 
-	public CursoService(CursoRepository cursoRepository,CursoMapper cursoMapper, ReferenciaMapper mapper) {
-		this.cursoRepository=cursoRepository;
-		this.cursoMapper=cursoMapper;
+	public CursoService(CursoRepository cursoRepository, CursoMapper cursoMapper, ReferenciaMapper mapper) {
+		this.cursoRepository = cursoRepository;
+		this.cursoMapper = cursoMapper;
 		this.mapper = mapper;
 	}
 
 	@Transactional
 	public CursoResponseDto create(CursoRequestDto request) {
 		Set<AlunoEntity> alunos = new HashSet<>();
-		alunos=mapper.AlunoEntity(request.getAlunos());
+		alunos = mapper.AlunoEntity(request.getAlunos());
 		CursoEntity curso = new CursoEntity(request.getNome(), alunos);
-		return cursoMapper.paraCursoResponseDto(curso);
+		return cursoMapper.paraCursoResponseDto(cursoRepository.save(curso));
 
 	}
 
@@ -38,17 +41,18 @@ public class CursoService {
 		return cursoMapper.paraListaCursoResponseDto(cursoRepository.findAll());
 	}
 
-	public CursoResponseDto listarPorNome(String nome) {
-		if (!cursoRepository.existsByNome(nome)) {
-			throw new RuntimeException("erro");
-		}
-		return cursoMapper.paraCursoResponseDto(cursoRepository.findByNome(nome));
+	public CursoResponseDto listarPorId(UUID id) {
+
+		CursoEntity curso = cursoRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Curso não encontrado!"));
+		// Converte a entidade 'Curso' para um DTO de resposta e a retorna
+		return cursoMapper.paraCursoResponseDto(curso);
 	}
 
 	@Transactional
 	public CursoResponseDto update(UUID id, CursoRequestDto request) {
 		// Pegar o id do curso e depois atualizar de acordo com o request
-		CursoEntity curso= cursoRepository.findById(id).orElseThrow(() -> new RuntimeException("erro"));
+		CursoEntity curso = cursoRepository.findById(id).orElseThrow(() -> new RuntimeException("erro"));
 		cursoMapper.update(request, curso);
 
 		// Pegar o aluno do request(se tiver) e transformar de uuid para a entidade e
@@ -63,11 +67,10 @@ public class CursoService {
 	}
 
 	@Transactional
-	public void deletarByNome(String nome) {
-		if (!cursoRepository.existsByNome(nome)) {
-			throw new RuntimeException("erro");
+	public void deletarById(UUID id) {
+		if (!cursoRepository.existsById(id)) {
+			throw new RuntimeException("Curso não encontrado!");
 		}
-		cursoRepository.deleteByNome(nome);
+		cursoRepository.deleteById(id);
 	}
-
 }

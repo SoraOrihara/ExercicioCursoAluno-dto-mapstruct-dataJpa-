@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.springEstudo.CursoAluno.business.AlunoService;
@@ -35,19 +34,19 @@ public class AlunoController {
 		List<AlunoResponseDto> alunos = alunoService.listarTudo();
 		return ResponseEntity.ok().body(alunos);
 	}
-	@GetMapping("/listarPorEmail")
-	public ResponseEntity<AlunoResponseDto> listarPorEmail(@RequestParam String email){
-		AlunoResponseDto response= alunoService.listarPorEmail(email);
-		return ResponseEntity.ok().body(response);
+	@GetMapping("/listarPorId/{id}")
+	public ResponseEntity<AlunoResponseDto> listarPorId(@PathVariable UUID id){
+	    AlunoResponseDto response = alunoService.listarPorId(id);
+	    return ResponseEntity.ok().body(response);
+	}
+
+	@DeleteMapping("/deletarPorId/{id}")
+	public ResponseEntity<Void> deletarPorId(@PathVariable UUID id){
+	    alunoService.deletarById(id);
+	    return ResponseEntity.ok().build();
 	}
 	
-	@DeleteMapping("/deletarPorEmail")
-	public ResponseEntity<Void> deletarPorEmail(@RequestParam String email){
-		alunoService.deletarByEmail(email);
-		return ResponseEntity.ok().build();
-	}
-	
-	@PostMapping
+	@PostMapping("/create")
 	public ResponseEntity<AlunoResponseDto> criarAluno(@RequestBody @Valid AlunoRequestDto request){
 		AlunoResponseDto alunoCriado = alunoService.create(request);
 		return ResponseEntity.status(HttpStatus.CREATED).body(alunoCriado);

@@ -4,14 +4,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import jakarta.validation.constraints.NotBlank;
 
 
 public class AlunoRequestDto {
 
-	@NotBlank
+	
 	private String nome;
-	@NotBlank
+	
 	private String email;
 	
 	private Set<UUID> cursos = new HashSet<>();
@@ -44,7 +43,7 @@ public class AlunoRequestDto {
 		super();
 	}
 
-	public AlunoRequestDto(@NotBlank String nome, @NotBlank String email, Set<UUID> cursos) {
+	public AlunoRequestDto( String nome,  String email, Set<UUID> cursos) {
 		super();
 		this.nome = nome;
 		this.email = email;
