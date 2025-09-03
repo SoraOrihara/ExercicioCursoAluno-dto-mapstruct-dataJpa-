@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import br.com.springEstudo.CursoAluno.business.dto.AlunoRequestDto;
@@ -22,7 +22,6 @@ public class AlunoService {
 
 	private final AlunoRepository alunoRepository;
 	private final AlunoMapper alunoMapper;
-	@Autowired
 	private final ReferenciaMapper mapper;
 
 	public AlunoService(AlunoRepository alunoRepository, AlunoMapper alunoMapper, ReferenciaMapper mapper) {

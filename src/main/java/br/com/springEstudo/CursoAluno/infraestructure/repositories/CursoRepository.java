@@ -6,6 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.com.springEstudo.CursoAluno.infraestructure.entities.CursoEntity;
 
+
 public interface CursoRepository extends JpaRepository<CursoEntity, UUID> {
 
+	CursoEntity findByNome(String nome);
+	boolean existsByNome(String nome);
+	void deleteByNome(String nome);
 }
