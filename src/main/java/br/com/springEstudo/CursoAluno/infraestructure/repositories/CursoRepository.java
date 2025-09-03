@@ -1,5 +1,5 @@
 package br.com.springEstudo.CursoAluno.infraestructure.repositories;
 
-public class CursoRepository {
+public interface CursoRepository {
 
 }
