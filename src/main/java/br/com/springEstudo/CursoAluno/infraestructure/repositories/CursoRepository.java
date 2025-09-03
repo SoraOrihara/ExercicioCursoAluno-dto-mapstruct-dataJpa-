@@ -1,5 +1,11 @@
 package br.com.springEstudo.CursoAluno.infraestructure.repositories;
 
-public interface CursoRepository {
+import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import br.com.springEstudo.CursoAluno.infraestructure.entities.CursoEntity;
+
+public interface CursoRepository extends JpaRepository<CursoEntity, UUID> {
 
 }
